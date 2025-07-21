@@ -1,0 +1,172 @@
+import { useState } from 'react';
+import Swal from 'sweetalert2';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import mystyles from '../styles/Home.module.css';
+import Image from 'next/image';
+
+const questions = [
+  { text: 'Me gusta encontrar soluciones originales a los problemas cotidianos.', category: 'Chik Innovador' },
+  { text: 'Disfruto imaginar cómo podría mejorar mi comunidad o entorno.', category: 'Chik Innovador' },
+  { text: 'Prefiero trabajar en proyectos que requieran creatividad y nuevas ideas.', category: 'Chik Innovador' },
+  { text: 'Me siento inspirado al proponer algo que nadie ha intentado antes.', category: 'Chik Innovador' },
+  { text: 'Suelo tomar la iniciativa cuando estoy en un grupo.', category: 'Chik Líder' },
+  { text: 'Me gusta guiar a otros hacia metas comunes.', category: 'Chik Líder' },
+  { text: 'Creo que puedo inspirar a las personas con mis acciones o palabras.', category: 'Chik Líder' },
+  { text: 'Me siento cómodo tomando decisiones importantes en equipo.', category: 'Chik Líder' },
+  { text: 'Es importante para mí que todos en mi entorno se sientan incluidos.', category: 'Chik Solidario' },
+  { text: 'Prefiero resolver conflictos hablando y buscando acuerdos.', category: 'Chik Solidario' },
+  { text: 'Me gusta ayudar a las personas que enfrentan dificultades.', category: 'Chik Solidario' },
+  { text: 'Me siento feliz cuando contribuyo al bienestar de otros.', category: 'Chik Solidario' },
+  { text: 'Me interesa aprender cosas nuevas constantemente.', category: 'Chik Explorador' },
+  { text: 'Prefiero experiencias nuevas a rutinas repetitivas.', category: 'Chik Explorador' },
+  { text: 'Me adapto rápidamente cuando algo en mi vida cambia.', category: 'Chik Explorador' },
+  { text: 'Me entusiasma conocer personas, culturas o ideas diferentes.', category: 'Chik Explorador' },
+  { text: 'Me preocupo por mantener la estabilidad en mi entorno.', category: 'Chik Protector' },
+  { text: 'Creo que es importante cuidar los recursos y proteger lo que es valioso.', category: 'Chik Protector' },
+  { text: 'Me esfuerzo por cumplir con mis compromisos, pase lo que pase.', category: 'Chik Protector' },
+  { text: 'Me siento realizado cuando contribuyo al bienestar de mi comunidad.', category: 'Chik Protector' },
+];
+
+export default function Home() {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
+  const [saving, setSaving] = useState(false);
+  const [formCompleted, setFormCompleted] = useState(false);
+  const [formData, setFormData] = useState({
+    nombre: '',
+    email: '',
+    permisos: false,
+  });
+
+  const handleAnswer = (value) => {
+    const next = [...answers];
+    next[currentQuestion] = value;
+    setAnswers(next);
+  };
+
+  const calcScores = () => {
+    const scores = {
+      'Chik Innovador': 0,
+      'Chik Líder': 0,
+      'Chik Solidario': 0,
+      'Chik Explorador': 0,
+      'Chik Protector': 0,
+    };
+    questions.forEach((q, i) => { scores[q.category] += answers[i] || 0; });
+    return scores;
+  };
+
+  const showResult = async () => {
+    if (answers.includes(null)) {
+      return Swal.fire({ icon: 'warning', title: 'Faltan respuestas', text: 'Responde todas las preguntas.' });
+    }
+
+    const scores = calcScores();
+    const totalPoints = Object.values(scores).reduce((a, b) => a + b, 0);
+    const maxScore = Math.max(...Object.values(scores));
+    let perfil = 'Chik Versátil';
+    if (maxScore >= 8) perfil = Object.keys(scores).find(k => scores[k] === maxScore);
+
+    Swal.fire({
+      title: '¡Resultado Final!',
+      html: `<p><strong>Perfil:</strong> ${perfil}</p><p>Total puntos: ${totalPoints}/100</p>`
+    });
+
+    try {
+      setSaving(true);
+      const res = await fetch('/api/quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          respuestas: answers,
+          totalPoints,
+          perfil,
+        }),
+      });
+      if (!res.ok) throw new Error('Error al guardar');
+    } catch (e) {
+      console.error(e);
+      Swal.fire({ icon: 'error', title: 'No se guardó', text: 'Inténtalo otra vez.' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className={mystyles['form-signin']}>
+      <Image src="/10.svg" alt="Logo" width={200} height={100} />
+      <h2>¿QUÉ TIPO DE <strong>CHIK ERES?</strong></h2>
+
+      {!formCompleted ? (
+        <form onSubmit={e => {
+          e.preventDefault();
+          if (!formData.nombre || !formData.email || !formData.permisos) {
+            Swal.fire({ icon: 'warning', title: 'Completa todos los campos y acepta los permisos' });
+            return;
+          }
+          setFormCompleted(true);
+        }}>
+          <div>
+            <label>Nombre:</label><br />
+            <input
+              type="text"
+              value={formData.nombre}
+              onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+              required
+            />
+          </div>
+          <div>
+            <label>Email:</label><br />
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.permisos}
+                onChange={(e) => setFormData({ ...formData, permisos: e.target.checked })}
+              />{' '}
+              Acepto compartir mis respuestas y recibir información a mi correo sobre el test.
+            </label>
+          </div>
+          <button type="submit" style={{ marginTop: 12 }}>Comenzar Test</button>
+        </form>
+      ) : (
+        <>
+          <p><strong>{currentQuestion + 1} / {questions.length}</strong></p>
+          {questions[currentQuestion] && (
+            <>
+              <h4>{questions[currentQuestion].text}</h4>
+              {[1, 2, 3, 4, 5].map(v => (
+                <label key={v} style={{ display: 'block', marginBottom: 4 }}>
+                  <input
+                    type="radio"
+                    name={`q-${currentQuestion}`}
+                    value={v}
+                    checked={answers[currentQuestion] === v}
+                    onChange={() => handleAnswer(v)}
+                  />{' '}
+                  {v === 1 ? 'Totalmente en desacuerdo' : v === 2 ? 'En desacuerdo' : v === 3 ? 'Neutral' : v === 4 ? 'De acuerdo' : 'Totalmente de acuerdo'}
+                </label>
+              ))}
+              <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
+                <button class="btn btn-success" disabled={currentQuestion === 0} onClick={() => setCurrentQuestion(c => c - 1)}>Regresar</button>
+                {currentQuestion < questions.length - 1 ? (
+                  <button onClick={() => setCurrentQuestion(c => c + 1)}>Siguiente</button>
+                ) : (
+                  <button disabled={saving} onClick={showResult}>{saving ? 'Guardando...' : 'Finalizar'}</button>
+                )}
+              </div>
+            </>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
