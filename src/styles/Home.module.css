@@ -1,14 +1,97 @@
 .form-signin {
   width: 100%;
-  max-width: 330px;
+  min-width: 1000px;
   padding: 15px;
   margin: auto;
   background-color: #0056fc;
+  color: #D3FC10;
 }
 
-.form-signin .checkbox {
-  font-weight: 400;
+.logo_chik{
+  width: 100%;
+  height: 100px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 2px 0 0 #D3FC10;
 }
+
+.box-titulo{
+  width: 100%;
+  padding-bottom: 20px;
+  box-shadow: 0 2px 0 0 #D3FC10;
+
+}
+
+.titulo{
+  width: 70%;
+  font-size: 3.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.form_data{
+  padding-top: 30px;
+  color: #D3FC10;
+}
+
+.box-button{
+  display: flex;
+  justify-content: space-around;
+}
+
+.box-button button{
+  display:flex;
+  justify-content: space-around;
+  background-color: #D3FC10;
+  border-radius: 8px ;
+  border-color: #D3FC10;
+  padding:15px 70px;
+  color: #0056fc;
+  font-weight:bolder;
+  font-size: 1.2rem;
+}
+
+.box-button button:hover{
+  background-color: #ffc107;
+  border-color: #ffc107;
+  
+}
+
+.form_data input{
+  background-color: #D3FC10;
+  border-color: #D3FC10;
+}
+
+.form_data input:focus{
+  background-color: #D3FC10;
+  border-color: #D3FC10;
+}
+
+.form_data input:-webkit-autofill {
+  background-color: #D3FC10 !important;
+  border-color: #D3FC10 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #D3FC10 inset !important;
+  -webkit-text-fill-color: #000 !important; /* Color del texto */
+}
+
+.form_data input:checked[type=checkbox] {
+    --bs-form-check-bg-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e);
+    background-color: green !important;
+    border-color: green;
+}
+
+.quiz-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 25px 25px 0 25px;
+  margin: auto;  
+  color: #D3FC10;
+  font-size: 1.2rem;
+}
+
 
 .form-signin .form-floating:focus-within {
   z-index: 2;
@@ -24,4 +107,13 @@
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+
+@media (width > 1576px) {
+  
+    .logo_chik{
+
+    }
+    
 }

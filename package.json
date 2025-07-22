@@ -12,6 +12,7 @@
     "@prisma/client": "^6.12.0",
     "bootstrap": "^5.3.7",
     "next": "15.4.1",
+    "nodemailer": "^7.0.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sweetalert2": "^11.22.2"

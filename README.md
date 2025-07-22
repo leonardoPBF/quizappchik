@@ -38,8 +38,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 my comands:
 
-npx prisma migrate dev --name init
-
 
 npm install prisma @prisma/client
 npx prisma init
+npx prisma migrate dev --name init
+railway run npx prisma migrate deploy
+
+

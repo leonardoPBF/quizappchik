@@ -2,7 +2,9 @@ html,
 body {
   display: flex;
   align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  justify-content: center;
   background-color: #0056fc;
+}
+input[type="radio"] {
+  accent-color: #D3FC10;
 }

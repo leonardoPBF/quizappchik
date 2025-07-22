@@ -68,8 +68,15 @@ export default function Home() {
     if (maxScore >= 8) perfil = Object.keys(scores).find(k => scores[k] === maxScore);
 
     Swal.fire({
-      title: '¡Resultado Final!',
-      html: `<p><strong>Perfil:</strong> ${perfil}</p><p>Total puntos: ${totalPoints}/100</p>`
+      title: '¡Analizando resultados!',
+      html: `<p><strong>Realizando analisis sobre tu perfil:</strong></p>`,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      timer: 5000,
+      timerProgressBar: true,
+      allowOutsideClick: false,   
+      
     });
 
     try {
@@ -80,11 +87,22 @@ export default function Home() {
         body: JSON.stringify({
           ...formData,
           respuestas: answers,
-          totalPoints,
-          perfil,
         }),
       });
+          
       if (!res.ok) throw new Error('Error al guardar');
+      const data = await res.json();
+
+      Swal.fire({
+        title: '¡Resultado Final!',
+        html: `
+        <p><strong>Perfil:</strong> ${data.perfil}</p>
+        <p>Total puntos: ${data.totalPoints}</p>
+       
+        </img src="/10.svg" alt="Logo" width="200" height="100" />
+        `,
+      });
+      
     } catch (e) {
       console.error(e);
       Swal.fire({ icon: 'error', title: 'No se guardó', text: 'Inténtalo otra vez.' });
@@ -95,9 +113,15 @@ export default function Home() {
 
   return (
     <div className={mystyles['form-signin']}>
-      <Image src="/10.svg" alt="Logo" width={200} height={100} />
-      <h2>¿QUÉ TIPO DE <strong>CHIK ERES?</strong></h2>
-
+      <div className={mystyles['box_logo_chik']}>
+        
+          <Image className={mystyles['logo_chik']} src="/10.svg" alt="Logo" width={200} height={100} herf="/index" />
+        
+      </div>
+      
+      <div className={mystyles['box-titulo']}>
+        <h2 className={mystyles['titulo']}>¿QUÉ TIPO DE <strong>CHIK ERES?</strong></h2>
+      </div>
       {!formCompleted ? (
         <form onSubmit={e => {
           e.preventDefault();
@@ -107,65 +131,82 @@ export default function Home() {
           }
           setFormCompleted(true);
         }}>
-          <div>
-            <label>Nombre:</label><br />
-            <input
-              type="text"
-              value={formData.nombre}
-              onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-              required
-            />
-          </div>
-          <div>
-            <label>Email:</label><br />
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-            />
-          </div>
-          <div style={{ marginTop: 8 }}>
-            <label>
+          <div className={mystyles['form_data']}>
+            <div className="form-floating mb-3">
               <input
+                type="text"
+                className="form-control"
+                id="floatingNombre"
+                placeholder="Nombre (Apodo)"
+                value={formData.nombre}
+                onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                required
+              />
+              <label htmlFor="floatingNombre">Nombre (Apodo)</label>
+            </div>
+
+            {/* Email */}
+            <div className="form-floating mb-3">
+              <input
+                type="email"
+                className="form-control"
+                id="floatingEmail"
+                placeholder="name@example.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+              />
+              <label htmlFor="floatingEmail">Email</label>
+            </div>
+
+            {/* Permisos (checkbox no soporta floating, se deja estilo estándar) */}
+            <div className="form-check mb-3">
+              <input
+                className="form-check-input"
                 type="checkbox"
+                id="permisosCheck"
                 checked={formData.permisos}
                 onChange={(e) => setFormData({ ...formData, permisos: e.target.checked })}
-              />{' '}
-              Acepto compartir mis respuestas y recibir información a mi correo sobre el test.
-            </label>
+              />
+              <label className="form-check-label" htmlFor="permisosCheck">
+                Acepto compartir mis respuestas y recibir información a mi correo sobre el test.
+              </label>
+            </div>
+          </div>  
+          <div className={mystyles['box-button']}>
+            <button type="submit" style={{ marginTop: 12 }}>Comenzar Test</button>
           </div>
-          <button type="submit" style={{ marginTop: 12 }}>Comenzar Test</button>
+            
         </form>
       ) : (
-        <>
+        <div className={mystyles['quiz-container']}>
           <p><strong>{currentQuestion + 1} / {questions.length}</strong></p>
           {questions[currentQuestion] && (
             <>
               <h4>{questions[currentQuestion].text}</h4>
-              {[1, 2, 3, 4, 5].map(v => (
-                <label key={v} style={{ display: 'block', marginBottom: 4 }}>
-                  <input
-                    type="radio"
-                    name={`q-${currentQuestion}`}
-                    value={v}
-                    checked={answers[currentQuestion] === v}
-                    onChange={() => handleAnswer(v)}
-                  />{' '}
-                  {v === 1 ? 'Totalmente en desacuerdo' : v === 2 ? 'En desacuerdo' : v === 3 ? 'Neutral' : v === 4 ? 'De acuerdo' : 'Totalmente de acuerdo'}
-                </label>
-              ))}
+                {[1, 2, 3, 4, 5].map(v => (
+                  <label key={v} style={{ display: 'block', marginBottom: 4 }}>
+                    <input
+                      type="radio"
+                      name={`q-${currentQuestion}`}
+                      value={v}
+                      checked={answers[currentQuestion] === v}
+                      onChange={() => handleAnswer(v)}
+                    />{' '}
+                    {v === 1 ? 'Totalmente en desacuerdo' : v === 2 ? 'En desacuerdo' : v === 3 ? 'Neutral' : v === 4 ? 'De acuerdo' : 'Totalmente de acuerdo'}
+                  </label>
+                ))}
               <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
                 <button class="btn btn-success" disabled={currentQuestion === 0} onClick={() => setCurrentQuestion(c => c - 1)}>Regresar</button>
                 {currentQuestion < questions.length - 1 ? (
-                  <button onClick={() => setCurrentQuestion(c => c + 1)}>Siguiente</button>
+                  <button class="btn btn-success" onClick={() => setCurrentQuestion(c => c + 1)}>Siguiente</button>
                 ) : (
-                  <button disabled={saving} onClick={showResult}>{saving ? 'Guardando...' : 'Finalizar'}</button>
+                  <button class="btn btn-success" disabled={saving} onClick={showResult}>{saving ? 'Guardando...' : 'Finalizar'}</button>
                 )}
               </div>
             </>
           )}
-        </>
+        </div>
       )}
     </div>
   );
