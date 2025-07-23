@@ -2,6 +2,9 @@
 import prisma from '@/lib/prisma_responses';
 import nodemailer from "nodemailer";
 import fs from 'fs';
+import path from 'path';
+
+const imagePath = path.join(process.cwd(), 'public', 'perfiles', `${perfilFile}.png`);
 
 const NUM_QUESTIONS = 20;
 
@@ -155,7 +158,7 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
     attachments: [
       {
         filename: `${perfilFile}.png`,
-        path: `./public/perfiles/${perfilFile}.png`,
+        path: imagePath,
         cid: 'perfilImage',
       },
     ],
