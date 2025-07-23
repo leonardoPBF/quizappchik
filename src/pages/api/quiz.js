@@ -120,6 +120,12 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
     },
   });
 
+  function getPerfilImageFile(perfil) {
+    return perfil.replace(/\s+/g, '_'); // Reemplaza espacios por _
+  }
+
+  const perfilFile = getPerfilImageFile(perfil)
+
   // Plantilla HTML del correo
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
@@ -148,9 +154,9 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
     html: htmlContent,
     attachments: [
       {
-        filename: `${perfil}.png`,
-        path: `./public/perfiles/${perfil}.png`,
-        cid: 'perfilImage', // para <img src="cid:perfilImage" />
+        filename: `${perfilFile}.png`,
+        path: `./public/perfiles/${perfilFile}.png`,
+        cid: 'perfilImage',
       },
     ],
   });

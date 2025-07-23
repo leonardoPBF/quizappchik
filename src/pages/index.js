@@ -94,13 +94,14 @@ export default function Home() {
           
       if (!res.ok) throw new Error('Error al guardar');
       const data = await res.json();
+      const perfilFile = data.perfil.replace(/\s+/g, '_');
 
       Swal.fire({
         title: '¡Resultado Final!',
         html: `
         <p><strong>Perfil:</strong> ${data.perfil}</p>
         <p>Total puntos: ${data.totalPoints}</p>
-        <img src="perfiles/${data.perfil}.png" alt="Logo" width="200"/>
+        <img src="perfiles/${perfilFile}.png" alt="Logo" width="200"/>
         <p>Gracias por participar. Revisa tu correo e infórmate más sobre nosotros.</p>
         `,
       });

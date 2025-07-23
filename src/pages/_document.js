@@ -6,6 +6,7 @@ export default function Document() {
       <Head>
         {/* Aquí va tu favicon */}
         <link rel="icon" href="/favicon.ico" />
+        <title>Chik test</title>
       </Head>
       <body>
         <Main />
