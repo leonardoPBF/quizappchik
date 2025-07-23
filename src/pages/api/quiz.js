@@ -1,6 +1,7 @@
 // /pages/api/quiz.js
 import prisma from '@/lib/prisma_responses';
 import nodemailer from "nodemailer";
+import fs from 'fs';
 
 const NUM_QUESTIONS = 20;
 
@@ -81,9 +82,9 @@ export default async function handler(req, res) {
         nombre,
         email,
         permisos,
-        ...respuestaData,
         totalPoints: finalTotal,
         perfil: finalPerfil,
+        ...respuestaData,        
         // createdAt se autogenera vía @default(now())
       },
       select: {
@@ -97,7 +98,7 @@ export default async function handler(req, res) {
     });
 
     console.log('Quiz response created:', record);
-    await sendResultEmail(email, nombre, perfil, totalPoints);
+    await sendResultEmail(email, nombre, record.perfil, record.totalPoints);
 
     return res.status(201).json({
       message: 'Guardado',
@@ -119,20 +120,40 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
     },
   });
 
-  const htmlTemplate = `
+  // Plantilla HTML del correo
+  const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
       <h2 style="color: #4CAF50;">¡Hola ${nombre}!</h2>
       <p>Tu perfil <strong>${perfil}</strong> ha sido calculado con un total de <strong>${totalPoints} puntos</strong>.</p>
-      <p>Gracias por completar el test. Nos pondremos en contacto contigo si aceptaste recibir información.</p>
+      <img src="cid:perfilImage" alt="Logo" width="200" />
+      <p>Gracias por completar el test. Apóyanos en nuestras redes sociales:</p>  
+      
+      <a href="https://www.instagram.com/socialmentechik/" target="_blank" style="color: #000000; text-decoration: none; display: inline-block;">
+        <img 
+          src="https://cdn-icons-png.flaticon.com/256/87/87390.png" 
+          alt="Síguenos en Instagram" 
+          width="50" 
+          style="display: block; border: 0; outline: none;"
+        />
+      </a>
       <hr style="border:none;border-top:1px solid #ccc;margin:20px 0;" />
-      <p style="font-size:12px;color:#555;">Este email fue enviado automáticamente. Por favor no respondas a este mensaje.</p>
+      <p style="font-size:12px;color:#555;">Este email fue enviado automáticamente. Por favor, no respondas a este mensaje.</p>
     </div>
   `;
 
   await transporter.sendMail({
-    from: `"Test Chik" <${process.env.EMAIL_USER}>`,
+    from: process.env.EMAIL_USER,
     to,
-    subject: "Resultado de tu test Chik",
-    html: htmlTemplate,
+    subject: '¡Resultado Final de tu Test!',
+    html: htmlContent,
+    attachments: [
+      {
+        filename: `${perfil}.png`,
+        path: `./public/perfiles/${perfil}.png`,
+        cid: 'perfilImage', // para <img src="cid:perfilImage" />
+      },
+    ],
   });
+
+  console.log(`Correo enviado a ${to}`);
 }

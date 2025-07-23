@@ -69,7 +69,9 @@ export default function Home() {
 
     Swal.fire({
       title: '¡Analizando resultados!',
-      html: `<p><strong>Realizando analisis sobre tu perfil:</strong></p>`,
+      html: `<p><strong>Realizando analisis sobre tu perfil:</strong></p>
+        <p><strong>Enviando correo:</strong></p>
+      `,
       didOpen: () => {
         Swal.showLoading();
       },
@@ -98,8 +100,8 @@ export default function Home() {
         html: `
         <p><strong>Perfil:</strong> ${data.perfil}</p>
         <p>Total puntos: ${data.totalPoints}</p>
-       
-        </img src="/10.svg" alt="Logo" width="200" height="100" />
+        <img src="perfiles/${data.perfil}.png" alt="Logo" width="200"/>
+        <p>Gracias por participar. Revisa tu correo e infórmate más sobre nosotros.</p>
         `,
       });
       
@@ -131,7 +133,9 @@ export default function Home() {
           }
           setFormCompleted(true);
         }}>
+
           <div className={mystyles['form_data']}>
+             <h2 style={{marginleft: 'auto', marginright: 'auto', display: 'block',}} >SER CHIK, participa y conoce que tipo de chik eres, se evaluara mediante afirmaciones que permiten identificar rasgos específicos de personalidad, requiere un tiempo aproximado de 15 minutos. Está compuesto por 20 ítems que exploran los perfiles</h2>
             <div className="form-floating mb-3">
               <input
                 type="text"
@@ -196,12 +200,12 @@ export default function Home() {
                     {v === 1 ? 'Totalmente en desacuerdo' : v === 2 ? 'En desacuerdo' : v === 3 ? 'Neutral' : v === 4 ? 'De acuerdo' : 'Totalmente de acuerdo'}
                   </label>
                 ))}
-              <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
-                <button class="btn btn-success" disabled={currentQuestion === 0} onClick={() => setCurrentQuestion(c => c - 1)}>Regresar</button>
+              <div className={mystyles['box-final-button']} style={{ gap: 8,}}>
+                <button class="btn btn-light" style={{backgroundColor: '#D3FC10',}} disabled={currentQuestion === 0} onClick={() => setCurrentQuestion(c => c - 1)}>Regresar</button>
                 {currentQuestion < questions.length - 1 ? (
-                  <button class="btn btn-success" onClick={() => setCurrentQuestion(c => c + 1)}>Siguiente</button>
+                  <button class="btn btn-light" onClick={() => setCurrentQuestion(c => c + 1)}>Siguiente</button>
                 ) : (
-                  <button class="btn btn-success" disabled={saving} onClick={showResult}>{saving ? 'Guardando...' : 'Finalizar'}</button>
+                  <button class="btn btn-info" disabled={saving} onClick={showResult}>{saving ? 'Guardando...' : 'Finalizar'}</button>
                 )}
               </div>
             </>

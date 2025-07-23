@@ -37,6 +37,17 @@
   color: #D3FC10;
 }
 
+.form_data h2{
+  display: block;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    width: 900px;
+    padding-bottom:1rem;
+    font-size:1.4rem;
+    text-align:center;
+}
+    
 .box-button{
   display: flex;
   justify-content: space-around;
@@ -55,8 +66,8 @@
 }
 
 .box-button button:hover{
-  background-color: #ffc107;
-  border-color: #ffc107;
+  background-color: #10f4fcff;
+  border-color: #10f4fcff;
   
 }
 
@@ -85,11 +96,20 @@
 
 .quiz-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   padding: 25px 25px 0 25px;
   margin: auto;  
   color: #D3FC10;
   font-size: 1.2rem;
+  box-shadow: 0 2px 0 0  #D3FC10;
+}
+
+.quiz-container button{
+  padding: 20px 150px;
+  font-size: 1.3rem;
+  color:#0056fc;
+  font-weight:bolder;
+  border-radius:15px;
 }
 
 
@@ -109,11 +129,113 @@
   border-top-right-radius: 0;
 }
 
-
-@media (width > 1576px) {
+.box-final-button{
+  margin-top: 22px!important;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px 0 20px;
+  border-top: #D3FC10 3px solid;
   
+}
+
+@media (width < 1076px ) {
+  
+    .form-signin {
+      width: 100%;
+      min-width: 700px;
+      padding: 15px;
+      margin: auto;
+      background-color: #0056fc;
+      color: #D3FC10;
+    }
+
     .logo_chik{
+      flex-direction: column;
+    }
+    .box-titulo{
+      width: 100%;
+      padding-bottom: 20px;
+      box-shadow: 0 2px 0 0 #D3FC10;
 
     }
-    
+
+    .titulo{
+      width: 70%;
+      font-size: 2.5rem;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      text-align: center;
+      font-family: sans-serif;
+    }
+}
+
+@media (width < 840px) {
+  
+    .form-signin {
+      width: 100%;
+      min-width: 200px;
+      padding: 15px;
+      margin: auto;
+      background-color: #0056fc;
+      color: #D3FC10;
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 500px;
+      padding: 25px 25px 0 25px;
+      margin: auto;  
+      color: #D3FC10;
+      font-size: 1.2rem;
+    }
+
+    .logo_chik{
+      /* flex-direction: column; */
+    }
+    .box-titulo{
+      width: 100%;
+      padding-bottom: 20px;
+      box-shadow: 0 2px 0 0 #D3FC10;
+
+    }
+
+    .titulo{
+      width: 70%;
+      font-size: 1.5rem;
+    }
+
+    .box-final-button{
+      margin-top: 16px;
+      flex-direction: column;
+      
+    }
+
+}
+
+@media (width < 518px) {
+  
+    .form-signin {
+      min-width: 200px;      
+    }
+    .quiz-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 25px 25px 0 25px;
+    }
+
+    .box-titulo{
+      width: 100%;
+      padding-bottom: 20px;
+      box-shadow: 0 2px 0 0 #D3FC10;
+
+    }
+
+    .quiz-container button{
+      padding: 10px 60px;
+      font-size: 1.3rem;
+      color:#0056fc;
+      font-weight:bolder;
+      border-radius:15px;
+    }
+
 }
