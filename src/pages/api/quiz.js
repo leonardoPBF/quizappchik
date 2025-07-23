@@ -2,9 +2,6 @@
 import prisma from '@/lib/prisma_responses';
 import nodemailer from "nodemailer";
 import fs from 'fs';
-import path from 'path';
-
-const imagePath = path.join(process.cwd(), 'public', 'perfiles', `${perfilFile}.png`);
 
 const NUM_QUESTIONS = 20;
 
@@ -128,13 +125,14 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
   }
 
   const perfilFile = getPerfilImageFile(perfil)
+  const imageUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/perfiles/${encodeURIComponent(perfilFilel)}.png`;
 
   // Plantilla HTML del correo
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
       <h2 style="color: #4CAF50;">¡Hola ${nombre}!</h2>
       <p>Tu perfil <strong>${perfil}</strong> ha sido calculado con un total de <strong>${totalPoints} puntos</strong>.</p>
-      <img src="cid:perfilImage" alt="Logo" width="200" />
+      <img src="imageUrl" alt="Logo" width="200" />
       <p>Gracias por completar el test. Apóyanos en nuestras redes sociales:</p>  
       
       <a href="https://www.instagram.com/socialmentechik/" target="_blank" style="color: #000000; text-decoration: none; display: inline-block;">
@@ -144,25 +142,14 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
           width="50" 
           style="display: block; border: 0; outline: none;"
         />
+
       </a>
       <hr style="border:none;border-top:1px solid #ccc;margin:20px 0;" />
       <p style="font-size:12px;color:#555;">Este email fue enviado automáticamente. Por favor, no respondas a este mensaje.</p>
     </div>
   `;
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to,
-    subject: '¡Resultado Final de tu Test!',
-    html: htmlContent,
-    attachments: [
-      {
-        filename: `${perfilFile}.png`,
-        path: imagePath,
-        cid: 'perfilImage',
-      },
-    ],
-  });
+  
 
   console.log(`Correo enviado a ${to}`);
 }

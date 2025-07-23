@@ -95,13 +95,14 @@ export default function Home() {
       if (!res.ok) throw new Error('Error al guardar');
       const data = await res.json();
       const perfilFile = data.perfil.replace(/\s+/g, '_');
+      const imageUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/perfiles/${encodeURIComponent(perfilFile)}.png`;
 
       Swal.fire({
         title: '¡Resultado Final!',
         html: `
         <p><strong>Perfil:</strong> ${data.perfil}</p>
         <p>Total puntos: ${data.totalPoints}</p>
-        <img src="perfiles/${perfilFile}.png" alt="Logo" width="200"/>
+        <img src="${imageUrl}" alt="Logo" width="200"/>
         <p>Gracias por participar. Revisa tu correo e infórmate más sobre nosotros.</p>
         `,
       });
