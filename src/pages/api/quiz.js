@@ -119,20 +119,13 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
       pass: process.env.EMAIL_PASS,
     },
   });
-
-  function getPerfilImageFile(perfil) {
-    return perfil.replace(/\s+/g, '_'); // Reemplaza espacios por _
-  }
-
-  const perfilFile = getPerfilImageFile(perfil)
-  const imageUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/perfiles/${encodeURIComponent(perfilFilel)}.png`;
-
+  const imageUrl = getPerfilImageUrl(perfil);
   // Plantilla HTML del correo
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
       <h2 style="color: #4CAF50;">¡Hola ${nombre}!</h2>
       <p>Tu perfil <strong>${perfil}</strong> ha sido calculado con un total de <strong>${totalPoints} puntos</strong>.</p>
-      <img src="imageUrl" alt="Logo" width="200" />
+      <img src="${imageUrl}" alt="${perfil}" width="200" />
       <p>Gracias por completar el test. Apóyanos en nuestras redes sociales:</p>  
       
       <a href="https://www.instagram.com/socialmentechik/" target="_blank" style="color: #000000; text-decoration: none; display: inline-block;">
@@ -153,3 +146,31 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
 
   console.log(`Correo enviado a ${to}`);
 }
+
+  const perfiles = [
+    'Chik Innovador',
+    'Chik Líder',
+    'Chik Solidario',
+    'Chik Explorador',
+    'Chik Protector',
+    'Chik Versátil',
+  ];
+
+  function getPerfilImageUrl(perfil) {
+    switch (perfil) {
+      case 'Chik Innovador':
+        return 'https://i.ibb.co/d0JzRM7S/Chik-Innovador.png';
+      case 'Chik Líder':
+        return 'https://i.ibb.co/3mJt9DTR/Chik-L-der.png';
+      case 'Chik Solidario':
+        return 'https://i.ibb.co/cc9N52XZ/Chik-Solidario.png';
+      case 'Chik Explorador':
+        return 'https://i.ibb.co/WWGHxxZD/Chik-Explorador.png';
+      case 'Chik Protector':
+        return 'https://i.ibb.co/KzwMfxPd/Chik-Protector.png';
+      case 'Chik Versátil':
+        return 'https://i.ibb.co/93Gg69nW/Chik-Vers-til.png';
+      default:
+        return 'https://i.ibb.co/d0JzRM7S/Chik-Innovador.png'; // Fallback
+    }
+  }

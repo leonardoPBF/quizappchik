@@ -94,9 +94,36 @@ export default function Home() {
           
       if (!res.ok) throw new Error('Error al guardar');
       const data = await res.json();
-      const perfilFile = data.perfil.replace(/\s+/g, '_');
-      const imageUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/perfiles/${encodeURIComponent(perfilFile)}.png`;
 
+        const perfiles = [
+    'Chik Innovador',
+    'Chik Líder',
+    'Chik Solidario',
+    'Chik Explorador',
+    'Chik Protector',
+    'Chik Versátil',
+  ];
+
+  function getPerfilImageUrl(perfil) {
+    switch (perfil) {
+      case 'Chik Innovador':
+        return 'https://i.ibb.co/d0JzRM7S/Chik-Innovador.png';
+      case 'Chik Líder':
+        return 'https://i.ibb.co/3mJt9DTR/Chik-L-der.png';
+      case 'Chik Solidario':
+        return 'https://i.ibb.co/cc9N52XZ/Chik-Solidario.png';
+      case 'Chik Explorador':
+        return 'https://i.ibb.co/WWGHxxZD/Chik-Explorador.png';
+      case 'Chik Protector':
+        return 'https://i.ibb.co/KzwMfxPd/Chik-Protector.png';
+      case 'Chik Versátil':
+        return 'https://i.ibb.co/93Gg69nW/Chik-Vers-til.png';
+      default:
+        return 'https://i.ibb.co/d0JzRM7S/Chik-Innovador.png'; // Fallback
+    }
+  } 
+  const imageUrl = getPerfilImageUrl(perfil);
+      
       Swal.fire({
         title: '¡Resultado Final!',
         html: `
