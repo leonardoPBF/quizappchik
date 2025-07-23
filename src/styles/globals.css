@@ -1,0 +1,10 @@
+html,
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0056fc;
+}
+input[type="radio"] {
+  accent-color: #D3FC10;
+}

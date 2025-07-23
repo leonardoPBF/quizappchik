@@ -1,0 +1,41 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model QuizResponse {
+  id          String   @id @default(uuid())
+  nombre      String
+  email       String
+  permisos Boolean @default(false)
+  respuesta1  Int
+  respuesta2  Int
+  respuesta3  Int
+  respuesta4  Int
+  respuesta5  Int
+  respuesta6  Int
+  respuesta7  Int
+  respuesta8  Int
+  respuesta9  Int
+  respuesta10 Int
+  respuesta11 Int
+  respuesta12 Int
+  respuesta13 Int
+  respuesta14 Int
+  respuesta15 Int
+  respuesta16 Int
+  respuesta17 Int
+  respuesta18 Int
+  respuesta19 Int
+  respuesta20 Int
+  totalPoints Int
+  perfil      String
+  createdAt   DateTime @default(now())
+
+  @@map("quiz_responses")
+}

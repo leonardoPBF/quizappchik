@@ -1,0 +1,32 @@
+-- CreateTable
+CREATE TABLE "quiz_responses" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "permisos" BOOLEAN NOT NULL DEFAULT false,
+    "respuesta1" INTEGER NOT NULL,
+    "respuesta2" INTEGER NOT NULL,
+    "respuesta3" INTEGER NOT NULL,
+    "respuesta4" INTEGER NOT NULL,
+    "respuesta5" INTEGER NOT NULL,
+    "respuesta6" INTEGER NOT NULL,
+    "respuesta7" INTEGER NOT NULL,
+    "respuesta8" INTEGER NOT NULL,
+    "respuesta9" INTEGER NOT NULL,
+    "respuesta10" INTEGER NOT NULL,
+    "respuesta11" INTEGER NOT NULL,
+    "respuesta12" INTEGER NOT NULL,
+    "respuesta13" INTEGER NOT NULL,
+    "respuesta14" INTEGER NOT NULL,
+    "respuesta15" INTEGER NOT NULL,
+    "respuesta16" INTEGER NOT NULL,
+    "respuesta17" INTEGER NOT NULL,
+    "respuesta18" INTEGER NOT NULL,
+    "respuesta19" INTEGER NOT NULL,
+    "respuesta20" INTEGER NOT NULL,
+    "totalPoints" INTEGER NOT NULL,
+    "perfil" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "quiz_responses_pkey" PRIMARY KEY ("id")
+);
