@@ -121,6 +121,7 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
   });
   const imageUrl = getPerfilImageUrl(perfil);
   // Plantilla HTML del correo
+
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
       <h2 style="color: #4CAF50;">¡Hola ${nombre}!</h2>
@@ -142,8 +143,12 @@ async function sendResultEmail(to, nombre, perfil, totalPoints) {
     </div>
   `;
 
-  
-
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to,
+    subject: '¡Resultado Final de tu Test!',
+    html: htmlContent,
+  });
   console.log(`Correo enviado a ${to}`);
 }
 
